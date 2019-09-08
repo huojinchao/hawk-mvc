@@ -1,5 +1,9 @@
 package com.hawk.mvc.beans;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 /**
  * @description:
  * @author: huojc1
@@ -9,7 +13,13 @@ package com.hawk.mvc.beans;
  * <p> Number, date, modifier, reason</p>
  * <p> 1 </p>
  **/
+@TableName("base_area")
 public class Area {
+    /**
+     * 依赖mysql自动生成主键
+     * 其他字段自动遵从驼峰命名
+     */
+    @TableId(type = IdType.AUTO)
     private Integer areaId;
     private String areaName;
     private String cityCode;

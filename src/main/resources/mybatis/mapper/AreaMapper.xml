@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 不用写任何sql语句，完全依赖mybatis-plus-->
 <mapper namespace="com.hawk.mvc.mpper.AreaMapper">
-    <select id="findAll" resultType="com.hawk.mvc.beans.Area">
-         select * from base_area
+    <select id="selectAreaMap" resultType="java.util.Map">
+        select * from base_area
     </select>
 </mapper>

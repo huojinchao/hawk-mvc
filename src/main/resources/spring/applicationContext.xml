@@ -83,8 +83,8 @@
          <property name="username" value="root"></property>
          <property name="password" value="mysql123"></property>
      </bean>
-    <!--2.配置SessionFactory-->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <!--2.配置SessionFactory 只需要改这一个地方就能保证mybatis-plus生效-->
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
         <property name="dataSource" ref="datasource"></property>
         <!-- 指定ybatis-config文件-->
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
