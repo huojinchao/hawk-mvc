@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE configuration
+                PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--
+        2.settings:包含很多的重要设置
+            setting:用来设置每一个设置项
+                name:设置项名
+                value:设置项值
+                例如：mapUnderscoreToCamelCase 默认为false 这个的作用是驼峰命名转换，l_name -> lName
+    -->
+    <settings>
+        <!--开启驼峰命名-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+</configuration>

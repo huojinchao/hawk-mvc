@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd">
+<!--    <properties resource="dbconfig.properties"></properties>-->
+    <!--
+    IOC 启动时候自动扫描加载这个包路径下的类
+         Spring IOC 注解
+     用于描述类
+     @Repository 持久层
+     @Service 业务逻辑类
+     @Component 组件类
+     @Controller 控制器类 用于与web html进行交互的
+      用于注入
+     @Resource 智能加载
+     @Autowire 按类型加载
+     -->
+    <context:component-scan base-package="com.hawk.mvc"></context:component-scan>
+    <!-- 启用String MVC的注解模式 -->
+    <mvc:annotation-driven>
+         <!--解决response乱码问题 -->
+         <mvc:message-converters>
+             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                 <property name="supportedMediaTypes">
+                     <list>
+                         <value>text/html;charset=utf-8</value>
+                     </list>
+                 </property>
+             </bean>
+         </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!-- 将图片，JS,CSS等静态资源排除在外 -->
+    <mvc:default-servlet-handler/>
+    <!--启用AOP的注解功能 -->
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+        <property name="dateFormat">
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+            </bean>
+        </property>
+    </bean>
+    <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+        <!-- JSON IE兼容 -->
+        <property name="contentType" value="text/html;charset=UTF-8" />
+        <!-- 时间格式化 -->
+        <property name="objectMapper" ref="objectMapper" />
+    </bean>
+    <!-- freemarker start -->
+    <bean id="freeMarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <!-- 加载freemarker模板文件的目录 -->
+        <property name="templateLoaderPath" value="/WEB-INF/ftl"></property>
+        <!--强制freemarker以utf-8编码 保证各种容器部署不会出现乱码-->
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="defaultEncoding">UTF-8</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- 规定id的首字母必须大写 -->
+    <bean id="ViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="contentType" value="text/html;charset=UTF-8"></property>
+        <!-- xxx.ftl freemarker文件的后缀为.ftl -->
+        <property name="suffix" value=".ftl"></property>
+    </bean>
+    <!-- freemarker end -->
+    <!-- mybatis整合 star-->
+    <!-- 1.配置数据源-->
+     <bean id="datasource" class="com.alibaba.druid.pool.DruidDataSource">
+         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+         <property name="url" value="jdbc:mysql://localhost:3306/mvcread?useUnicode=true&amp;characterEncoding=UTF-8"></property>
+         <property name="username" value="root"></property>
+         <property name="password" value="mysql123"></property>
+     </bean>
+    <!--2.配置SessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="datasource"></property>
+        <!-- 指定ybatis-config文件-->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
+        <property name="mapperLocations" value="classpath:mybatis/mapper/*.xml"></property>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.hawk.mvc.mpper"></property>
+    </bean>
+    <!-- mybatis整合 end-->
+
+</beans>
